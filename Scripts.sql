@@ -2,7 +2,7 @@
 --Tabla Clientes
 CREATE TABLE Clientes (
 	idCliente INTEGER PRIMARY KEY NOT NULL, 
-	Nombre VARCHAR(200)
+	Nombre VARCHAR2(200)
 );
 
 INSERT INTO Clientes(idCliente, Nombre) VALUES
@@ -13,8 +13,8 @@ INSERT INTO Clientes(idCliente, Nombre) VALUES
 --Tabla Datos
 CREATE TABLE Datos (
 	idDatos INTEGER IDENTITY(1,1) PRIMARY KEY,
-	variable VARCHAR(200) NOT NULL,
-	valor VARCHAR(200),
+	variable VARCHAR2(200) NOT NULL,
+	valor VARCHAR2(200),
 	idCliente INTEGER, 
 	CONSTRAINT FK_ClienteDatos FOREIGN KEY (idCliente) 
     REFERENCES Clientes(idCliente)
@@ -34,11 +34,11 @@ INSERT INTO Datos(idCliente, Variable, Valor) VALUES
 -- Tabla Auditoria
 CREATE TABLE Auditoria (
     id INTEGER IDENTITY(1,1) PRIMARY KEY,
-	cliente VARCHAR, 
-	variable VARCHAR,
-	Valor VARCHAR,
+	cliente VARCHAR2(200), 
+	variable VARCHAR2(200),
+	Valor VARCHAR2(200),
 	FechaMod DATE,
-	accion VARCHAR
+	accion VARCHAR2(200)
 );
 
 --------------------- Consultas -----------------------------------------
@@ -54,7 +54,7 @@ WHERE
 (D3.Variable = 'Ciudad' AND D3.Valor = 'Bogota');
 
 -- Cuantos clientes hay por ciudad
-SELECT D.Valor, COUNT(C.idCliente) Clientes FROM Clientes C 
+SELECT D.Valor, COUNT(C.idCliente) AS Clientes FROM Clientes C 
 INNER JOIN Datos D ON D.idCliente = C.idCliente
 WHERE Variable = 'Ciudad'
 GROUP BY D.Valor;
@@ -68,17 +68,17 @@ D1.Variable = 'Genero' AND
 (D2.Variable = 'Mascota' AND D2.Valor = 'Si')
 GROUP BY D1.Valor;
 -- Promedio de mascotas por ciudad
-SELECT T1.Ciudad, T1.Mascotas, CAST(CAST(T1.Mascotas AS DECIMAL) / CAST(T2.Total AS DECIMAL) AS DECIMAL(7,2)) Promedio
+SELECT T1.Ciudad, T1.Mascotas, CAST(CAST(T1.Mascotas AS DECIMAL) / CAST(T2.Total AS DECIMAL) AS DECIMAL(7,2)) AS Promedio
 FROM (SELECT D1.Valor AS Ciudad, COUNT(D2.Variable) AS Mascotas FROM Clientes C 
 INNER JOIN Datos D1 ON D1.idCliente = C.idCliente
 INNER JOIN Datos D2 ON D2.idCliente = C.idCliente
 WHERE D1.Variable = 'Ciudad' AND (D2.Variable = 'Mascota' AND D2.Valor = 'Si')
 GROUP BY D1.Valor) AS T1,
-(SELECT COUNT(*) Total FROM Datos D WHERE D.Variable = 'Mascota' AND D.Valor = 'Si') AS T2;
+(SELECT COUNT(*) AS Total FROM Datos D WHERE D.Variable = 'Mascota' AND D.Valor = 'Si') AS T2;
 
 -- Promedio de mascotas de cada ciudad
 SELECT D1.Valor AS Ciudad,
-(SUM(CASE When D2.Valor = 'Si' Then 1.0 ELSE 0.0 END) / CAST(COUNT(D2.Valor) AS DECIMAL)) Promedio
+(SUM(CASE When D2.Valor = 'Si' Then 1.0 ELSE 0.0 END) / CAST(COUNT(D2.Valor) AS DECIMAL)) AS Promedio
 FROM Clientes C 
 INNER JOIN Datos D1 ON D1.idCliente = C.idCliente AND D1.Variable = 'Ciudad'
 INNER JOIN Datos D2 ON D2.idCliente = C.idCliente AND D2.Variable = 'Mascota'
