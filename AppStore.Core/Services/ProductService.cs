@@ -1,4 +1,4 @@
-﻿using AppStore.Core.Entities;
+using AppStore.Core.Entities;
 using AppStore.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -26,15 +26,21 @@ namespace AppStore.Core.Services
             return await _uniOfWork.ProductRespository.Select(Id);
         }
 
-        public async Task Create(Product entity)
+        public async Task Create(Product product)
         {
-            await _uniOfWork.ProductRespository.Insert(entity);
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
+            
+            await _uniOfWork.ProductRespository.Insert(product);
             await _uniOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> Edit(Product entity)
+        public async Task<bool> Edit(Product product)
         {
-            _uniOfWork.ProductRespository.Update(entity);
+            if (product == null)
+                throw new ArgumentNullException(nameof(product));
+            
+            _uniOfWork.ProductRespository.Update(product);
             await _uniOfWork.SaveChangesAsync();
             return true; // Machete
         }
