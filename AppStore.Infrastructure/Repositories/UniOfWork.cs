@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AppStore.Infrastructure.Repositories
 {
-    public class UniOfWork : IUniOfWork, IDisposable
+    public class UniOfWork : IUniOfWork
     {
         private readonly AppStoreDbContext _context;
         private readonly IRepository<Product> _productRepository;
