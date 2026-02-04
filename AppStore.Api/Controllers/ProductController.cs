@@ -29,6 +29,7 @@ namespace AppStore.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(object), 200)]
         public IActionResult List()
         {
             var products =  _productProduct.List();

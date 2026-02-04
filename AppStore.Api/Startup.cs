@@ -93,13 +93,8 @@ namespace AppStore.Api
 
             app.UseSwaggerUI(options =>
             {
-                // Nube
-                //options.SwaggerEndpoint("/swagger/v1/swagger.json", "App Store API");
-                //options.RoutePrefix = string.Empty;
-
                 // IIS Local
                 options.SwaggerEndpoint("../swagger/v1/swagger.json", "App Store API");
-
             });
 
             app.UseRouting();

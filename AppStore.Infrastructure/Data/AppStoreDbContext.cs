@@ -14,10 +14,10 @@ namespace AppStore.Infraestructure.Data
 
         public virtual DbSet<Product> Products { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
-            builder.ApplyConfiguration(new ProductConfig());
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new ProductConfig());
         }
     }
 }

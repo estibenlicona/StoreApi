@@ -25,6 +25,8 @@ namespace AppStore.Api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(404)]
         public IActionResult Authentication(User user)
         {
             if (IsValidUser(user))
@@ -61,7 +63,7 @@ namespace AppStore.Api.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private bool IsValidUser(User user)
+        private static bool IsValidUser(User user)
         {
             if (user.Username == "estibenlicona" && user.Password == "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9")
             {

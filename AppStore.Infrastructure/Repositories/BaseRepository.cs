@@ -12,7 +12,7 @@ namespace AppStore.Infrastructure.Repositories
 {
     public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
-        private DbSet<T> _entities;
+        private readonly DbSet<T> _entities;
 
         public BaseRepository(AppStoreDbContext context)
         {
@@ -39,9 +39,9 @@ namespace AppStore.Infrastructure.Repositories
             _entities.Update(entity);
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int Id)
         {
-            T entity = await Select(id);
+            T entity = await Select(Id);
             _entities.Remove(entity);
         }
 

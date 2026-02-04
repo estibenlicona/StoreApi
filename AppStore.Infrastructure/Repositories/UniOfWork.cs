@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace AppStore.Infrastructure.Repositories
 {
-    public class UniOfWork : IUniOfWork
+    public class UniOfWork : IUniOfWork, IDisposable
     {
         private readonly AppStoreDbContext _context;
         private readonly IRepository<Product> _productRepository;
+        private bool _disposed = false;
 
         public UniOfWork(AppStoreDbContext context, IRepository<Product> productRepository)
         {
@@ -20,10 +21,25 @@ namespace AppStore.Infrastructure.Repositories
 
         public void Dispose()
         {
-            if(_context != null)
+            Dispose(true);
+            System.GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
             {
-                _context.Dispose();
+                if (disposing)
+                {
+                    _context?.Dispose();
+                }
+                _disposed = true;
             }
+        }
+
+        ~UniOfWork()
+        {
+            Dispose(false);
         }
 
         public void SaveChanges()
